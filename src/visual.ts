@@ -30,6 +30,7 @@ import * as ReactDOM from "react-dom";
 import powerbi from "powerbi-visuals-api";
 
 import DataView = powerbi.DataView;
+import IViewport = powerbi.IViewport;
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
@@ -38,7 +39,7 @@ import ReactCircleCard from "./component";
 import "./../style/visual.less";
 
 export class Visual implements IVisual {
-
+    private viewport: IViewport;
     private target: HTMLElement;
     private reactRoot: React.ComponentElement<any, any>;
 
@@ -54,7 +55,12 @@ export class Visual implements IVisual {
         if(options.dataViews && options.dataViews[0]){
             const dataView: DataView = options.dataViews[0];
 
+            this.viewport = options.viewport;
+            const { width, height } = options.viewport;
+            const size = Math.min(width, height);
+
             ReactCircleCard.update({
+                size,
                 textLabel: dataView.metadata.columns[0].displayName,
                 textValue: dataView.single.value.toString()
             });
