@@ -23,33 +23,16 @@
 *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 *  THE SOFTWARE.
 */
-"use strict";
-import "@babel/polyfill";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import powerbi from "powerbi-visuals-api";
 
-import DataView = powerbi.DataView;
-import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
-import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
-import IVisual = powerbi.extensibility.visual.IVisual;
-
-import ReactCircleCard from "./component";
-import "./../style/visual.less";
-
-export class Visual implements IVisual {
-
-    private target: HTMLElement;
-    private reactRoot: React.ComponentElement<any, any>;
-
-    constructor(options: VisualConstructorOptions) {
-        this.reactRoot = React.createElement(ReactCircleCard, {});
-        this.target = options.element;
-
-        ReactDOM.render(this.reactRoot, this.target);
-    }
-
-    public update(options: VisualUpdateOptions) {
-
+export class ReactCircleCard extends React.Component<{}>{
+    render(){
+        return (
+            <div className="circleCard">
+                Hello, React!
+            </div>
+        )
     }
 }
+
+export default ReactCircleCard;
