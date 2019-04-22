@@ -51,5 +51,13 @@ export class Visual implements IVisual {
 
     public update(options: VisualUpdateOptions) {
 
+        if(options.dataViews && options.dataViews[0]){
+            const dataView: DataView = options.dataViews[0];
+
+            ReactCircleCard.update({
+                textLabel: dataView.metadata.columns[0].displayName,
+                textValue: dataView.single.value.toString()
+            });
+        }
     }
 }
