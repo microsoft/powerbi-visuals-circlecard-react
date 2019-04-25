@@ -35,12 +35,18 @@ import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructor
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 
-import ReactCircleCard from "./component";
+import VisualObjectInstance = powerbi.VisualObjectInstance;
+import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
+import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
+
+import { ReactCircleCard, initialState } from "./component";
+import { VisualSettings } from "./settings";
 import "./../style/visual.less";
 
 export class Visual implements IVisual {
     private viewport: IViewport;
     private target: HTMLElement;
+    private settings: VisualSettings;
     private reactRoot: React.ComponentElement<any, any>;
 
     constructor(options: VisualConstructorOptions) {
@@ -56,7 +62,7 @@ export class Visual implements IVisual {
             const dataView: DataView = options.dataViews[0];
 
             this.viewport = options.viewport;
-            const { width, height } = options.viewport;
+            const { width, height } = this.viewport;
             const size = Math.min(width, height);
 
             ReactCircleCard.update({
@@ -64,6 +70,19 @@ export class Visual implements IVisual {
                 textLabel: dataView.metadata.columns[0].displayName,
                 textValue: dataView.single.value.toString()
             });
+        } else {
+            this.clear();
         }
+    }
+
+    private clear() {
+        ReactCircleCard.update(initialState);
+    }
+
+    public enumerateObjectInstances(
+        options: EnumerateVisualObjectInstancesOptions
+    ): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
+
+        return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
     }
 }

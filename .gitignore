@@ -331,3 +331,6 @@ ASALocalRun/
 
 # Webpack statistics
 webpack.statistics.*.html
+
+# PowerBI dist
+dist
