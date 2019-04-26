@@ -29,11 +29,11 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import powerbi from "powerbi-visuals-api";
 
-import DataView = powerbi.DataView;
-import IViewport = powerbi.IViewport;
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
+import DataView = powerbi.DataView;
+import IViewport = powerbi.IViewport;
 
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
@@ -44,10 +44,10 @@ import { VisualSettings } from "./settings";
 import "./../style/visual.less";
 
 export class Visual implements IVisual {
-    private viewport: IViewport;
     private target: HTMLElement;
-    private settings: VisualSettings;
     private reactRoot: React.ComponentElement<any, any>;
+    private settings: VisualSettings;
+    private viewport: IViewport;
 
     constructor(options: VisualConstructorOptions) {
         this.reactRoot = React.createElement(ReactCircleCard, {});
@@ -60,13 +60,17 @@ export class Visual implements IVisual {
 
         if(options.dataViews && options.dataViews[0]){
             const dataView: DataView = options.dataViews[0];
-
             this.viewport = options.viewport;
             const { width, height } = this.viewport;
             const size = Math.min(width, height);
 
+            this.settings = VisualSettings.parse(dataView) as VisualSettings;
+            const object = this.settings.circle;
+            
             ReactCircleCard.update({
                 size,
+                borderWidth: object && object.circleThickness ? object.circleThickness : undefined,
+                background: object && object.circleColor ? object.circleColor : undefined,
                 textLabel: dataView.metadata.columns[0].displayName,
                 textValue: dataView.single.value.toString()
             });
