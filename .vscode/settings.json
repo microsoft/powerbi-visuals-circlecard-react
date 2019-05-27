@@ -18,20 +18,20 @@
         {
             "fileMatch": [
                 "/pbiviz.json"
-            ],            
+            ],
             "url": "./node_modules/powerbi-visuals-api/schema.pbiviz.json"
         },
         {
             "fileMatch": [
                 "/capabilities.json"
-            ],            
+            ],
             "url": "./node_modules/powerbi-visuals-api/schema.capabilities.json"
         },
         {
             "fileMatch": [
                 "/dependencies.json"
-            ],            
+            ],
             "url": "./node_modules/powerbi-visuals-api/schema.dependencies.json"
-        }        
-    ]    
+        }
+    ]
 }

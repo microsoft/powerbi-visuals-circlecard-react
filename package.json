@@ -11,10 +11,11 @@
     "@babel/runtime-corejs2": "^7.2.0",
     "@types/react": "^16.8.14",
     "@types/react-dom": "^16.8.4",
-    "powerbi-visuals-api": "^2.5.0",
-    "powerbi-visuals-utils-dataviewutils": "2.0.1",
+    "powerbi-visuals-api": "^2.6.0",
+    "powerbi-visuals-utils-dataviewutils": "^2.2.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "recharts": "^1.6.0"
   },
   "devDependencies": {
     "ts-loader": "4.5.0",
