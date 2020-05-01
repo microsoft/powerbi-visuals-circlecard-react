@@ -1,5 +1,6 @@
 {
   "name": "circle-card-react",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/powerbi-visuals-circlecard-react"

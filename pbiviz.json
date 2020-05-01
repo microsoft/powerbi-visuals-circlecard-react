@@ -4,7 +4,7 @@
         "displayName":"ReactCircleCard",
         "guid":"reactCircleCardF6C87CAA832A42FBBFBF7E66B8C15578",
         "visualClassName":"Visual",
-        "version":"1.0.0",
+        "version":"1.0.1",
         "description":"",
         "supportUrl":"",
         "gitHubUrl":"https://github.com/Microsoft/powerbi-visuals-circlecard-react"
