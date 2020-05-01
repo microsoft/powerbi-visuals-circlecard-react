@@ -7,7 +7,7 @@
         "version":"1.0.0",
         "description":"",
         "supportUrl":"",
-        "gitHubUrl":""
+        "gitHubUrl":"https://github.com/Microsoft/powerbi-visuals-circlecard-react"
     },
     "apiVersion":"2.6.2",
     "author":{

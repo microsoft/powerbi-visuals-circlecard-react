@@ -27,17 +27,17 @@
 import "core-js";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import powerbi from "powerbi-visuals-api";
+import powerbiVisualsApi from "powerbi-visuals-api";
 
-import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
-import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
-import IVisual = powerbi.extensibility.visual.IVisual;
-import DataView = powerbi.DataView;
-import IViewport = powerbi.IViewport;
+import VisualConstructorOptions = powerbiVisualsApi.extensibility.visual.VisualConstructorOptions;
+import VisualUpdateOptions = powerbiVisualsApi.extensibility.visual.VisualUpdateOptions;
+import IVisual = powerbiVisualsApi.extensibility.visual.IVisual;
+import DataView = powerbiVisualsApi.DataView;
+import IViewport = powerbiVisualsApi.IViewport;
 
-import VisualObjectInstance = powerbi.VisualObjectInstance;
-import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
-import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
+import VisualObjectInstance = powerbiVisualsApi.VisualObjectInstance;
+import EnumerateVisualObjectInstancesOptions = powerbiVisualsApi.EnumerateVisualObjectInstancesOptions;
+import VisualObjectInstanceEnumerationObject = powerbiVisualsApi.VisualObjectInstanceEnumerationObject;
 
 import { ReactCircleCard, initialState } from "./component";
 import { VisualSettings } from "./settings";
@@ -64,7 +64,7 @@ export class Visual implements IVisual {
             const { width, height } = this.viewport;
             const size = Math.min(width, height);
 
-            this.settings = VisualSettings.parse(dataView) as VisualSettings;
+            this.settings = <VisualSettings>VisualSettings.parse(dataView);
             const object = this.settings.circle;
             
             ReactCircleCard.update({
