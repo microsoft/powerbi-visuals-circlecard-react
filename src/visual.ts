@@ -24,34 +24,37 @@
 *  THE SOFTWARE.
 */
 "use strict";
-import "core-js";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import powerbiVisualsApi from "powerbi-visuals-api";
+import powerbi from "powerbi-visuals-api";
+import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
 
-import VisualConstructorOptions = powerbiVisualsApi.extensibility.visual.VisualConstructorOptions;
-import VisualUpdateOptions = powerbiVisualsApi.extensibility.visual.VisualUpdateOptions;
-import IVisual = powerbiVisualsApi.extensibility.visual.IVisual;
-import DataView = powerbiVisualsApi.DataView;
-import IViewport = powerbiVisualsApi.IViewport;
-
-import VisualObjectInstance = powerbiVisualsApi.VisualObjectInstance;
-import EnumerateVisualObjectInstancesOptions = powerbiVisualsApi.EnumerateVisualObjectInstancesOptions;
-import VisualObjectInstanceEnumerationObject = powerbiVisualsApi.VisualObjectInstanceEnumerationObject;
+import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
+import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
+import ILocalizationManager = powerbi.extensibility.ILocalizationManager;
+import FormattingModel = powerbi.visuals.FormattingModel;
+import IVisual = powerbi.extensibility.visual.IVisual;
+import DataView = powerbi.DataView;
+import IViewport = powerbi.IViewport;
 
 import { ReactCircleCard, initialState } from "./component";
-import { VisualSettings } from "./settings";
+import { Settings } from "./settings";
 import "./../style/visual.less";
 
 export class Visual implements IVisual {
     private target: HTMLElement;
     private reactRoot: React.ComponentElement<any, any>;
-    private settings: VisualSettings;
+    private settings: Settings;
     private viewport: IViewport;
+    private formattingSettingsService: FormattingSettingsService;
+    private localizationManager: ILocalizationManager;
 
     constructor(options: VisualConstructorOptions) {
         this.reactRoot = React.createElement(ReactCircleCard, {});
         this.target = options.element;
+        this.settings = new Settings()
+        this.localizationManager = options.host.createLocalizationManager()
+        this.formattingSettingsService = new FormattingSettingsService(this.localizationManager);
 
         ReactDOM.render(this.reactRoot, this.target);
     }
@@ -64,13 +67,13 @@ export class Visual implements IVisual {
             const { width, height } = this.viewport;
             const size = Math.min(width, height);
 
-            this.settings = <VisualSettings>VisualSettings.parse(dataView);
+            this.settings = this.formattingSettingsService.populateFormattingSettingsModel(Settings, options.dataViews);
             const object = this.settings.circle;
             
             ReactCircleCard.update({
                 size,
-                borderWidth: object && object.circleThickness ? object.circleThickness : undefined,
-                background: object && object.circleColor ? object.circleColor : undefined,
+                borderWidth: object?.circleThickness.value ? object.circleThickness.value : undefined,
+                background: object?.circleColor.value.value ? object.circleColor.value.value : undefined,
                 textLabel: dataView.metadata.columns[0].displayName,
                 textValue: dataView.single.value.toString()
             });
@@ -83,10 +86,8 @@ export class Visual implements IVisual {
         ReactCircleCard.update(initialState);
     }
 
-    public enumerateObjectInstances(
-        options: EnumerateVisualObjectInstancesOptions
-    ): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
-
-        return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
+    public getFormattingModel(): FormattingModel {
+        return this.formattingSettingsService.buildFormattingModel(this.settings);
     }
+
 }

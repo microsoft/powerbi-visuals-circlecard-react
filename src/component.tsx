@@ -39,7 +39,7 @@ export const initialState: State = {
     size: 200
 }
 
-export class ReactCircleCard extends React.Component<{}, State>{
+export class ReactCircleCard extends React.Component<object, State>{
 
     private static updateCallback: (data: object) => void = null;
 
