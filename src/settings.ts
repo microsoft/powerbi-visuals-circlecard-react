@@ -26,15 +26,32 @@
 
 "use strict";
 
-import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
-import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
+import { formattingSettings } from "powerbi-visuals-utils-formattingmodel";
 
-export class CircleSettings {
-    public circleColor: string = "white";
-    public circleThickness: number = 2;
+import Model = formattingSettings.Model;
+import FormattingSettingsCard = formattingSettings.Card;
+import FormattingSettingsSlice = formattingSettings.Slice;
+
+export class CircleSettings extends FormattingSettingsCard {
+    public circleColor =  new formattingSettings.ColorPicker({
+        name: "circleColor",
+        displayName: "Color",
+        value: { value: "white" }
+    });
+    public circleThickness = new formattingSettings.NumUpDown({
+        name: "circleThickness",
+        displayName: "Thickness",
+        value: 2,
+    });
+
+    name: string = "circle";
+    displayName: string = "Circle";
+    slices: FormattingSettingsSlice[] = [this.circleColor, this.circleThickness];
 }
 
-export class VisualSettings extends DataViewObjectsParser {
+export class Settings extends Model {
     public circle: CircleSettings = new CircleSettings();
+
+    cards: FormattingSettingsCard[] = [this.circle];
 }
 

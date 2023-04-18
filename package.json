@@ -1,6 +1,6 @@
 {
   "name": "circle-card-react",
-  "version": "1.0.1",
+  "version": "2.0.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/powerbi-visuals-circlecard-react"
@@ -9,20 +9,22 @@
     "pbiviz": "pbiviz",
     "start": "pbiviz start",
     "package": "pbiviz package",
-    "lint": "tslint -r \"node_modules/tslint-microsoft-contrib\" \"+(src|test)/**/*.ts\""
+    "lint": "npx eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7",
-    "core-js": "^3.6.5",
-    "powerbi-visuals-api": "^2.6.2",
-    "powerbi-visuals-utils-dataviewutils": "2.0.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "powerbi-visuals-api": "~5.3.0",
+    "powerbi-visuals-utils-dataviewutils": "6.0.1",
+    "powerbi-visuals-utils-formattingmodel": "5.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "tslint": "^5.1.0",
-    "tslint-microsoft-contrib": "^6.2.0",
-    "typescript": "^3.8.3"
+    "@types/react": "^18.0.35",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "eslint": "^8.38.0",
+    "eslint-plugin-powerbi-visuals": "^0.8.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.9.5"
   }
 }
