@@ -36,6 +36,7 @@ import FormattingModel = powerbi.visuals.FormattingModel;
 import IVisual = powerbi.extensibility.visual.IVisual;
 import DataView = powerbi.DataView;
 import IViewport = powerbi.IViewport;
+import IVisualEventService = powerbi.extensibility.IVisualEventService;
 
 import { ReactCircleCard, initialState } from "./component";
 import { Settings } from "./settings";
@@ -48,10 +49,12 @@ export class Visual implements IVisual {
     private viewport: IViewport;
     private formattingSettingsService: FormattingSettingsService;
     private localizationManager: ILocalizationManager;
+    private events: IVisualEventService;
 
     constructor(options: VisualConstructorOptions) {
         this.reactRoot = React.createElement(ReactCircleCard, {});
         this.target = options.element;
+        this.events = options.host.eventService;
         this.settings = new Settings()
         this.localizationManager = options.host.createLocalizationManager()
         this.formattingSettingsService = new FormattingSettingsService(this.localizationManager);
@@ -60,25 +63,32 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
+        this.events.renderingStarted(options);
 
-        if(options.dataViews && options.dataViews[0]){
-            const dataView: DataView = options.dataViews[0];
-            this.viewport = options.viewport;
-            const { width, height } = this.viewport;
-            const size = Math.min(width, height);
+        try {
+            if(options.dataViews && options.dataViews[0]){
+                const dataView: DataView = options.dataViews[0];
+                this.viewport = options.viewport;
+                const { width, height } = this.viewport;
+                const size = Math.min(width, height);
 
-            this.settings = this.formattingSettingsService.populateFormattingSettingsModel(Settings, options.dataViews);
-            const object = this.settings.circle;
-            
-            ReactCircleCard.update({
-                size,
-                borderWidth: object?.circleThickness.value ? object.circleThickness.value : undefined,
-                background: object?.circleColor.value.value ? object.circleColor.value.value : undefined,
-                textLabel: dataView.metadata.columns[0].displayName,
-                textValue: dataView.single.value.toString()
-            });
-        } else {
-            this.clear();
+                this.settings = this.formattingSettingsService.populateFormattingSettingsModel(Settings, options.dataViews);
+                const object = this.settings.circle;
+                
+                ReactCircleCard.update({
+                    size,
+                    borderWidth: object?.circleThickness.value ? object.circleThickness.value : undefined,
+                    background: object?.circleColor.value.value ? object.circleColor.value.value : undefined,
+                    textLabel: dataView.metadata.columns[0].displayName,
+                    textValue: dataView.single.value.toString()
+                });
+            } else {
+                this.clear();
+            }
+
+            this.events.renderingFinished(options);
+        } catch (error) {
+            this.events.renderingFailed(error);
         }
     }
 
