@@ -1,3 +1,6 @@
+# 2.0.1.0
+* Added rendering events API
+
 # 2.0.0.0
 * Migrated to eslint
 * Updated all packages
